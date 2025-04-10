@@ -3,7 +3,6 @@ import numpy as np
 
 
 def integral(f, a, b, N, *params):
-    """Расчёт интеграла."""
     dx = (b - a) / N
     result = 0.5 * f(a, *params) + 0.5 * f(b, *params)
 
@@ -16,7 +15,6 @@ def integral(f, a, b, N, *params):
 
 
 def factorial(n):
-    """Расчёт факториала."""
     result = 1
     for i in range(1, n + 1):
         result *= i
@@ -24,7 +22,6 @@ def factorial(n):
 
 
 def my_sin(x, terms=15):
-    """Расчёт синуса."""
     is_array = isinstance(x, np.ndarray)
     x = np.asarray(x)
 
@@ -46,7 +43,6 @@ def my_sin(x, terms=15):
 
 
 def my_cos(x, terms=15):
-    """Расчёт косинуса."""
     is_array = isinstance(x, np.ndarray)
     x = np.asarray(x)
 
@@ -68,7 +64,6 @@ def my_cos(x, terms=15):
 
 
 def my_log2(x, tolerance=1e-10):
-    """Расчёт логарифма по основанию 2."""
     if x <= 0:
         raise ValueError("Логарифм определён только для положительных чисел")
 
@@ -90,7 +85,6 @@ def my_log2(x, tolerance=1e-10):
 
 
 def power_fast(x, n):
-    """Расчет возведения в степень."""
     if n == 0:
         return 1
     elif n < 0:
@@ -101,7 +95,6 @@ def power_fast(x, n):
 
 
 def my_sqrt(x, tolerance=1e-10):
-    """Расчёт квадратного корня."""
     if x < 0:
         raise ValueError("Невозможно извлечь квадратный корень" +
                          " из отрицательного числа.")
@@ -115,7 +108,6 @@ def my_sqrt(x, tolerance=1e-10):
 
 
 def DFT(x):
-    """Дискретное преобразование Фурье (ДПФ)."""
     N = len(x)
     X = []
     for k in range(N):
@@ -201,3 +193,49 @@ def DIF_FFT(x):
         result[k + N // 2] = even[k] - exp_factor * odd[k]
 
     return result
+
+def convolution_manual(signal1, signal2):
+    """Выполняет операцию свертки двух сигналов (сдвиг первого сигнала по второму)."""
+    len_s1 = len(signal1)
+    len_s2 = len(signal2)
+    result_len = len_s1 + len_s2 - 1  # Длина результата свертки
+    result = np.zeros(result_len)
+
+    # Процесс свертки: для каждого сдвига вычисляем сумму произведений
+    for i in range(len_s1):
+        for j in range(len_s2):
+            result[i + j] += signal1[i] * signal2[j]
+
+    return result
+
+def correlation_manual(signal1, signal2):
+    N = len(signal1)
+    correlation = np.zeros(N, dtype=float)
+
+    # Вычисляем корреляцию для каждого сдвига k
+    for k in range(N):
+        for n in range(N):
+            correlation[k] += signal1[n] * signal2[(n + k) % N]
+
+    return correlation
+
+def convolution_fft(signal1, signal2):
+    """Выполняет свёртку через БПФ"""
+    N = len(signal1) + len(signal2) - 1
+    N_fft = 2 ** int(np.ceil(np.log2(N)))
+
+    X = FFT(np.pad(signal1, (0, N_fft - len(signal1))))
+    Y = FFT(np.pad(signal2, (0, N_fft - len(signal2))))
+    Z = X * Y
+
+    result = np.real(IFFT(Z))[:N:]
+    return result
+
+
+def correlation_fft(signal1, signal2):
+    fft_signal1 = FFT(signal1)
+    fft_signal2 = FFT(signal2)
+
+    correlation = IFFT(fft_signal1 * np.conj(fft_signal2))
+
+    return np.real(correlation)[::-1]

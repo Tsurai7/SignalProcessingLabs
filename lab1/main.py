@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-from my_math import (my_cos, my_sin, integral, power_fast,
-                     DFT, DIF_FFT, IDFT, IFFT, my_log2, my_sqrt)
+from shared.my_math import (my_cos, my_sin, integral, power_fast,
+                            DFT, DIF_FFT, IDFT, IFFT, my_log2, my_sqrt)
 import time
-from Shared.wav import save_wave
+from shared.wav import save_wave
 
 
 a1, b1, v1 = 1, 5, 1
