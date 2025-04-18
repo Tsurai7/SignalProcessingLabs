@@ -7,11 +7,11 @@ import time
 from shared.wav import save_wave
 
 
-a1, b1, v1 = 1, 5, 1
-a2, b2, v2 = 2, 1, 2
-phi0 = -1.4
-N = 128
-D = 84
+a1, b1, v1 = 1, 3, 1
+a2, b2, v2 = 2, 5, 4
+phi0 = -1.9
+N = 256
+D = 23
 
 epsilon = 1e-15
 

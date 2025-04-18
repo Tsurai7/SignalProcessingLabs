@@ -5,11 +5,11 @@ from shared.my_math import (my_cos, my_sin, power_fast, convolution_manual,
                      correlation_manual, my_log2, correlation_fft,
                      convolution_fft)
 
-a1, b1, v1 = 0.5, 3, 2
-a2, b2, v2 = 2, 5, 1
-phi0 = 3.2
-N = 128
-D = 15
+a1, b1, v1 = 1, 3, 1
+a2, b2, v2 = 2, 5, 4
+phi0 = -1.9
+N = 256
+D = 23
 
 
 num_operations_conv = 2 * (N * N)
@@ -53,6 +53,16 @@ t6_corr = np.linspace(0, D, len(z6_corr))
 
 
 # Создаем три окна для графиков
+
+fig0, axs0 = plt.subplots(2, 1, figsize=(10, 6))
+axs0[0].plot(t, x_t, 'b')
+axs0[0].set_title('Original signal: x_t = a1 * sin(v1*t + phi0)^b1')
+axs0[0].set_xlabel('Time')
+axs0[1].plot(t, y_t, 'r')
+axs0[1].set_title('Original signal: y_t = a2 * cos(v2*t + phi0)^b2')
+axs0[1].set_xlabel('Time')
+fig0.tight_layout()
+plt.show()
 
 # Окно 1: для первых 4 графиков
 fig1, axs1 = plt.subplots(2, 2, figsize=(10, 8))
